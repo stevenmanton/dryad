@@ -46,6 +46,10 @@ class TestSeriesFunctionDispatch:
         with pytest.raises(AttributeError):
             self.ds.plus_one_non_existent()
 
+    def test_returns_dryad(self):
+        """Returns another dryad instance for chaining commands"""
+        assert isinstance(self.ds.plus_one(), DryadSeries)
+
 
 class TestDataFrameFunctionDispatch:
     ddf = DryadDataFrame({PlusOneField("A"): [1, 2, 3],

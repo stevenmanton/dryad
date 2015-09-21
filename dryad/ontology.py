@@ -1,3 +1,5 @@
+import re
+
 class BaseField(str):
     def __init__(self, name):
         self.name = name
@@ -19,4 +21,11 @@ class BaseField(str):
 
 
 class StringField(BaseField):
+    pass
+
+class DigitField(StringField):
+    def value_clean(self, val):
+        return re.sub(r"[^\d]*", "", val)
+
+class DateField(BaseField):
     pass

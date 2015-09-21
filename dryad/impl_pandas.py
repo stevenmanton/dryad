@@ -11,7 +11,7 @@ class DryadSeries(pd.Series):
 
         try:
             fun = getattr(self.name, "value_" + attr)
-            return lambda: self.apply(fun)
+            return lambda: DryadSeries(self.apply(fun))
         except AttributeError:
             raise e
 
