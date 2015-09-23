@@ -10,7 +10,7 @@ class DryadSeries(pd.Series):
             pass
 
         try:
-            fun = getattr(self.name, "value_" + attr)
+            fun = getattr(self.name, "item_" + attr)
             return lambda: DryadSeries(self.apply(fun))
         except AttributeError:
             raise e
@@ -31,7 +31,7 @@ class DryadDataFrame(pd.DataFrame):
         df_new = self.copy()
         for idx, col in self.iteritems():
             try:
-                fun = getattr(idx, "value_" + attr)
+                fun = getattr(idx, "item_" + attr)
                 df_new[idx] = col.apply(fun)
                 print col.attr()
             except AttributeError:

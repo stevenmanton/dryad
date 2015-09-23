@@ -27,8 +27,8 @@ class TestDigitField:
     field = DigitField("digit")
     ds = DryadSeries(["123a", "456b", "789c"], name=field)
 
-    def test_value_clean(self):
-        assert self.field.value_clean("123-456-7890") == "1234567890"
+    def test_item_clean(self):
+        assert self.field.item_clean("123-456-7890") == "1234567890"
 
     def test_clean_series(self):
         assert list(self.ds.clean()) == ["123", "456", "789"]

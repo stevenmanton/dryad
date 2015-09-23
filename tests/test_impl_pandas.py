@@ -27,18 +27,18 @@ class TestDataFrameOperations:
 
 
 class PlusOneField(BaseField):
-    def value_plus_one(self, val):
+    def item_plus_one(self, val):
         return val+1
 
 class UpperField(BaseField):
-    def value_upper(self, val):
+    def item_upper(self, val):
         return str.upper(val)
 
 
 class TestSeriesFunctionDispatch:
     ds = DryadSeries([1, 2, 3], name=PlusOneField("A"))
 
-    def test_value_plus_one(self):
+    def test_item_plus_one(self):
         assert list(self.ds.plus_one()) == [2, 3, 4]
 
     def test_attribute_error(self):
@@ -54,7 +54,7 @@ class TestDataFrameFunctionDispatch:
     ddf = DryadDataFrame({PlusOneField("A"): [1, 2, 3],
                           UpperField("B"): ['x', 'y', 'z']})
 
-    def test_value_plus_one(self):
+    def test_item_plus_one(self):
         assert list(self.ddf.plus_one()['A']) == [2, 3, 4]
 
     # def test_attribute_error(self):

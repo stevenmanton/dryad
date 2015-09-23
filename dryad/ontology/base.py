@@ -24,7 +24,7 @@ class StringField(BaseField):
     pass
 
 class DigitField(StringField):
-    def value_clean(self, val):
+    def item_clean(self, val):
         return re.sub(r"[^\d]*", "", val)
 
 class DateField(BaseField):
