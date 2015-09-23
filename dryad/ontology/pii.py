@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from ..ontology import *
+from .base import *
 
 class SSN(DigitField):
     pass

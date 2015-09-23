@@ -1,8 +1,7 @@
 import pytest
-
 import pandas as pd
 
-from dryad.ontology import *
+from dryad.ontology.base import *
 from dryad.impl_pandas import *
 
 

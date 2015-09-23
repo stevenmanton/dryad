@@ -1,2 +1,2 @@
 from impl_pandas import *
-from ontology import *
+from dryad.ontology import *

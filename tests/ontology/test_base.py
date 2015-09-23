@@ -1,5 +1,5 @@
 from dryad import *
-from dryad.ontology import *
+from dryad.ontology.base import *
 
 class TestBaseField:
     field = BaseField("A")
