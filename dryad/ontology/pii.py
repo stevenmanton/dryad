@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from .base import *
 
-class SSN(DigitField):
+class SSNField(DigitField):
     pass
 
 class NameField(StringField):

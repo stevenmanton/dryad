@@ -15,6 +15,10 @@ Example
 =======
 
 ```python
-df.columns = [NameField('FirstName'), NameField('LastName'), DOB('DOB')]
+df.columns = [NameField('FirstName'), NameField('LastName'), DOBField('DOB')]
 df.clean().validate()
 ```
+
+Automatic field detection
+-------------------------
+
