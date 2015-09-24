@@ -1,22 +1,32 @@
 import pandas as pd
 
-__all__ = ["DryadSeries", "DryadDataFrame"]
+__all__ = ["Series", "DataFrame"]
 
-class DryadSeries(pd.Series):
+class Series(pd.Series):
     def __getattr__(self, attr):
         try:
-            return super(DryadSeries, self).__getattr__(attr)
+            return super(Series, self).__getattr__(attr)
         except AttributeError as e:
             pass
 
         try:
             fun = getattr(self.name, "item_" + attr)
-            return lambda: DryadSeries(self.apply(fun))
+            return lambda: Series(self.apply(fun))
         except AttributeError:
             raise e
 
 
-class DryadDataFrame(pd.DataFrame):
+class DataFrame(pd.DataFrame):
+    # todo: Return dryad Series and DF's from indexing
+    # todo: Support inplace keyword
+
+    @property
+    def _constructor(self):
+        return DataFrame
+
+    # Hack pandas DataFrame to return dryad Series type:
+    _constructor_sliced = Series
+
     @staticmethod
     def from_pandas(df, names):
         df.columns = names
@@ -24,7 +34,7 @@ class DryadDataFrame(pd.DataFrame):
 
     def __getattr__(self, attr):
         try:
-            return super(DryadDataFrame, self).__getattr__(attr)
+            return super(DataFrame, self).__getattr__(attr)
         except AttributeError as e:
             pass
 

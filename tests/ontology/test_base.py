@@ -1,4 +1,4 @@
-from dryad import *
+from dryad.impl.pandas_ import *
 from dryad.ontology.base import *
 
 class TestBaseField:
@@ -8,7 +8,7 @@ class TestBaseField:
         assert self.field.__str__() == "A"
 
     def test_repr(self):
-        assert self.field.__repr__() == "BaseField[A]"
+        assert self.field.__repr__() == "Base[A]"
 
     def test_equality(self):
         assert self.field == BaseField("A")
@@ -25,7 +25,7 @@ class TestBaseField:
 
 class TestDigitField:
     field = DigitField("digit")
-    ds = DryadSeries(["123a", "456b", "789c"], name=field)
+    ds = Series(["123a", "456b", "789c"], name=field)
 
     def test_item_clean(self):
         assert self.field.item_clean("123-456-7890") == "1234567890"
