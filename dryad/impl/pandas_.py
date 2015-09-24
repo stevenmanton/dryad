@@ -27,10 +27,10 @@ class DataFrame(pd.DataFrame):
     # Hack pandas DataFrame to return dryad Series type:
     _constructor_sliced = Series
 
-    @staticmethod
-    def from_pandas(df, names):
-        df.columns = names
-        return df
+    @classmethod
+    def from_pandas(cls, df, names):
+        ddf = cls.from_records(df, columns=names)
+        return ddf
 
     def __getattr__(self, attr):
         try:
@@ -39,12 +39,17 @@ class DataFrame(pd.DataFrame):
             pass
 
         df_new = self.copy()
+        encountered_method = False
         for idx, col in self.iteritems():
             try:
                 fun = getattr(idx, "item_" + attr)
                 df_new[idx] = col.apply(fun)
-                print col.attr()
+                encountered_method = True
             except AttributeError:
                 pass
+        # return lambda: df_new
 
-        return lambda: df_new
+        if encountered_method:
+            return lambda: df_new
+        else:
+            raise e

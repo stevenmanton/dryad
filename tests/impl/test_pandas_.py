@@ -12,6 +12,7 @@ class TestDataFrameConstructors:
 
     def test_from_pandas(self):
         ddf = DataFrame.from_pandas(self.df, self.names)
+        assert isinstance(ddf, dryad.DataFrame)
         assert all([isinstance(x, BaseField) for x in ddf.columns])
 
 
@@ -73,6 +74,6 @@ class TestDataFrameFunctionDispatch:
     def test_item_plus_one(self):
         assert list(self.ddf.plus_one()['A']) == [2, 3, 4]
 
-    # def test_attribute_error(self):
-    #     with pytest.raises(AttributeError):
-    #         self.ds.plus_one_non_existent()
+    def test_attribute_error(self):
+        with pytest.raises(AttributeError):
+            self.ddf.function_that_does_not_exist()
