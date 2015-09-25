@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/stevenmanton/dryad.svg?branch=master)](https://travis-ci.org/stevenmanton/dryad)
-
 Dryad
 =====
+
+[![Build Status](https://travis-ci.org/stevenmanton/dryad.svg?branch=master)](https://travis-ci.org/stevenmanton/dryad)
 
 This project combines variable ontologies with typical Python tabular data processing to create easier, less repetitive workflows. In essence, it consists of two main concepts:
 
