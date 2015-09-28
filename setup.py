@@ -1,7 +1,4 @@
-try:
-    from setuptools import setup, Command
-except ImportError:
-    from distutils.core import setup, Command
+from setuptools import setup, find_packages
 
 setup(
     name="dryad",
@@ -11,9 +8,7 @@ setup(
     description="An implementation of an object-oriented variable ontology",
     keywords="ontology pandas",
     long_description="",
-    packages=[
-        'dryad',
-    ],
+    packages=find_packages(),
     package_dir={'dryad': 'dryad'},
     classifiers=[
         "Development Status :: 3 - Alpha",
