@@ -46,3 +46,5 @@ docs/_build
 .idea
 *.iml
 
+# Other
+.cache
