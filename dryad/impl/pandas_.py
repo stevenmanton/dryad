@@ -7,13 +7,11 @@ class Series(pd.Series):
         try:
             return super(Series, self).__getattr__(attr)
         except AttributeError as e:
-            pass
-
-        try:
-            fun = getattr(self.name, "item_" + attr)
-            return lambda: Series(self.apply(fun))
-        except AttributeError:
-            raise e
+            try:
+                fun = getattr(self.name, "item_" + attr)
+                return lambda: Series(self.apply(fun))
+            except AttributeError:
+                raise e
 
 
 class DataFrame(pd.DataFrame):
@@ -36,20 +34,17 @@ class DataFrame(pd.DataFrame):
         try:
             return super(DataFrame, self).__getattr__(attr)
         except AttributeError as e:
-            pass
+            df_new = self.copy()
+            encountered_method = False
+            for idx, col in self.iteritems():
+                try:
+                    fun = getattr(idx, "item_" + attr)
+                    df_new[idx] = col.apply(fun)
+                    encountered_method = True
+                except AttributeError:
+                    pass
 
-        df_new = self.copy()
-        encountered_method = False
-        for idx, col in self.iteritems():
-            try:
-                fun = getattr(idx, "item_" + attr)
-                df_new[idx] = col.apply(fun)
-                encountered_method = True
-            except AttributeError:
-                pass
-        # return lambda: df_new
-
-        if encountered_method:
-            return lambda: df_new
-        else:
-            raise e
+            if encountered_method:
+                return lambda: df_new
+            else:
+                raise e
