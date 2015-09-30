@@ -3,15 +3,33 @@ import pandas as pd
 __all__ = ["Series", "DataFrame"]
 
 class Series(pd.Series):
+
+    @property
+    def _constructor(self):
+        return Series
+
+    @property
+    def _constructor_expanddim(self):
+        return DataFrame
+
     def __getattr__(self, attr):
         try:
             return super(Series, self).__getattr__(attr)
         except AttributeError as e:
+            # Test to see if the function exists:
             try:
                 fun = getattr(self.name, "item_" + attr)
-                return lambda: Series(self.apply(fun))
+
+                def apply_fun(*args, **kwargs):
+                    return Series(self.apply(fun, args=args, **kwargs))
+                return apply_fun
             except AttributeError:
-                raise e
+                # Test to see if the attribute exists:
+                try:
+                    attr = getattr(self.name, attr)
+                    return attr
+                except AttributeError:
+                    raise e
 
 
 class DataFrame(pd.DataFrame):

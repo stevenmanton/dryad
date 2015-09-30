@@ -5,6 +5,19 @@ import dryad
 from dryad.ontology.base import *
 from dryad.impl.pandas_ import *
 
+# ----- Series -----
+
+class TestSeriesReturnTypes:
+    ds = dryad.Series([1, 2, 3])
+
+    def test_return_types(self):
+        assert isinstance(self.ds.apply(lambda x: x), dryad.Series)
+
+    def test_slice_return_types(self):
+        assert isinstance(self.ds[:], dryad.Series)
+
+
+# ----- DataFrame -----
 
 class TestDataFrameConstructors:
     df = pd.DataFrame({'A': [1, 2, 3], 'B': ['x', 'y', 'z']})
@@ -41,11 +54,19 @@ class TestDataFrameReturnTypes:
     def test_slice_to_dataframe(self):
         assert isinstance(self.ddf[['A', 'B']], dryad.DataFrame)
 
+
 # ----- Test DataFrame function dispatching -----
 
 class PlusOneField(BaseField):
+    attr = 'attr'  # test attribute
+
     def item_plus_one(self, val):
-        return val+1
+        return val + 1
+
+    @staticmethod
+    def item_plus_n(val, n):
+        return val + n
+
 
 class UpperField(BaseField):
     def item_upper(self, val):
@@ -53,10 +74,16 @@ class UpperField(BaseField):
 
 
 class TestSeriesFunctionDispatch:
-    ds = Series([1, 2, 3], name=PlusOneField("A"))
+    ds = dryad.Series([1, 2, 3], name=PlusOneField("A"))
+
+    def test_attr(self):
+        assert self.ds.attr == 'attr'
 
     def test_item_plus_one(self):
         assert list(self.ds.plus_one()) == [2, 3, 4]
+
+    def test_item_plus_n(self):
+        assert list(self.ds.plus_n(4)) == [5, 6, 7]
 
     def test_attribute_error(self):
         with pytest.raises(AttributeError):
@@ -69,7 +96,7 @@ class TestSeriesFunctionDispatch:
 
 class TestDataFrameFunctionDispatch:
     ddf = DataFrame({PlusOneField("A"): [1, 2, 3],
-                          UpperField("B"): ['x', 'y', 'z']})
+                     UpperField("B"): ['x', 'y', 'z']})
 
     def test_item_plus_one(self):
         assert list(self.ddf.plus_one()['A']) == [2, 3, 4]
